@@ -36,7 +36,7 @@ pipeline {
                     // Run the new container
                     docker.run(
                         image: "${DOCKER_IMAGE_NAME}:latest",
-                        args: "-p 80:80 --name ${CONTAINER_NAME}"
+                        args: "-d -p 80:80 --name ${CONTAINER_NAME}"
                     )
                 }
             }
