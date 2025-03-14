@@ -8,12 +8,12 @@ pipeline {
     }
 
     stages {
-        // stage('Checkout') {
-        //     steps {
-        //         // Clone the Git repository
-        //         git 'https://github.com/jasonh14/jenkins-test.git'
-        //     }
-        // }
+        stage('Checkout') {
+            steps {
+                // Clone the Git repository
+                git 'https://github.com/jasonh14/jenkins-test.git'
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
