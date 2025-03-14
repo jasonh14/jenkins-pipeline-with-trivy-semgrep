@@ -8,13 +8,13 @@ pipeline {
     }
 
     stages {
-        
-
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image
-                    docker.build("${DOCKER_IMAGE_NAME}:latest", ".")
+                    // Build the Docker image using a shell command
+                    sh '''
+                        docker build -t ${DOCKER_IMAGE_NAME}:latest .
+                    '''
                 }
             }
         }
@@ -28,11 +28,10 @@ pipeline {
                         docker rm ${CONTAINER_NAME} || true
                     """
 
-                    // Run the new container
-                    docker.run(
-                        image: "${DOCKER_IMAGE_NAME}:latest",
-                        args: "-d -p 80:80 --name ${CONTAINER_NAME}"
-                    )
+                    // Run the new container in detached mode (-d)
+                    sh """
+                        docker run -d -p 80:80 --name ${CONTAINER_NAME} ${DOCKER_IMAGE_NAME}:latest
+                    """
                 }
             }
         }
