@@ -5,6 +5,7 @@ pipeline {
         // Define environment variables for reuse
         DOCKER_IMAGE_NAME = "docker-reactjs"
         CONTAINER_NAME = "react-container"
+        TRIVY_VERSION = "latest" // Specify the Trivy version to use
     }
 
     stages {
@@ -15,6 +16,29 @@ pipeline {
                     sh '''
                         docker build -t ${DOCKER_IMAGE_NAME}:latest .
                     '''
+                }
+            }
+        }
+
+        stage('Scan Docker Image') {
+            steps {
+                script {
+                    // Install Trivy if not already installed
+                    sh '''
+                        if ! command -v trivy &> /dev/null; then
+                            echo "Installing Trivy..."
+                            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin ${TRIVY_VERSION}
+                        else
+                            echo "Trivy is already installed."
+                        fi
+                    '''
+
+                    // Scan the Docker image for vulnerabilities 
+                    // Add --exit-code 1 if you want to exit if severity HIGH,CRITICAL is found
+                    sh """
+                        echo "Scanning Docker image: ${DOCKER_IMAGE_NAME}:latest"
+                        trivy image --severity HIGH,CRITICAL ${DOCKER_IMAGE_NAME}:latest || true
+                    """
                 }
             }
         }
