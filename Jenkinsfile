@@ -23,16 +23,6 @@ pipeline {
         stage('Scan Docker Image') {
             steps {
                 script {
-                    // Install Trivy if not already installed
-                    sh '''
-                        if ! command -v trivy &> /dev/null; then
-                            echo "Installing Trivy..."
-                            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin ${TRIVY_VERSION}
-                        else
-                            echo "Trivy is already installed."
-                        fi
-                    '''
-
                     // Scan the Docker image for vulnerabilities 
                     // Add --exit-code 1 if you want to exit if severity HIGH,CRITICAL is found
                     sh """
