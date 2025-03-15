@@ -14,7 +14,7 @@ pipeline {
                 script {
                     sh """
                         echo "Running Semgrep SAST scan..."
-                        docker run -e SEMGREP_APP_TOKEN=YOUR_TOKEN --rm -v "${WORKSPACE}:/src" semgrep/semgrep semgrep ci
+                        docker run -e SEMGREP_APP_TOKEN=${SEMGREP_API_KEY} --rm -v "${WORKSPACE}:/src" semgrep/semgrep semgrep ci
                     """
                 }
             }
