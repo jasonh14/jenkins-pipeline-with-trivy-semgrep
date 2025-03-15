@@ -8,7 +8,8 @@ pipeline {
         SEMGREP_API_KEY = credentials('semgrep-api-key')
     }
 
-    stage('Semgrep SAST Scan') {
+    stages {
+        stage('Semgrep SAST Scan') {
             steps {
                 script {
                     sh """
@@ -23,8 +24,7 @@ pipeline {
                 }
             }
         }
-
-    stages {
+        
         stage('Build Docker Image') {
             steps {
                 script {
