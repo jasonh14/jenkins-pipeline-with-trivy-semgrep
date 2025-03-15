@@ -5,7 +5,24 @@ pipeline {
         // Define environment variables for reuse
         DOCKER_IMAGE_NAME = "docker-reactjs"
         CONTAINER_NAME = "react-container"
+        SEMGREP_API_KEY = credentials('semgrep-api-key')
     }
+
+    stage('Semgrep SAST Scan') {
+            steps {
+                script {
+                    sh """
+                        echo "Running Semgrep SAST scan..."
+                        docker run \\
+                            -e SEMGREP_APP_TOKEN=${SEMGREP_API_KEY} \\
+                            --rm \\
+                            -v "${PWD}:/src" \\
+                            semgrep/semgrep \\
+                            semgrep ci
+                    """
+                }
+            }
+        }
 
     stages {
         stage('Build Docker Image') {
