@@ -26,7 +26,7 @@ pipeline {
                     // Add --exit-code 1 if you want to exit if severity HIGH,CRITICAL is found
                     sh """
                         echo "Scanning Docker image: ${DOCKER_IMAGE_NAME}:latest"
-                        trivy image --severity HIGH,CRITICAL ${DOCKER_IMAGE_NAME}:latest || true
+                        trivy image --exit-code 1 --severity HIGH,CRITICAL ${DOCKER_IMAGE_NAME}:latest || true
                     """
                 }
             }
