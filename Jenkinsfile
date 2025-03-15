@@ -17,7 +17,8 @@ pipeline {
                         docker run \\
                             -e SEMGREP_APP_TOKEN=${SEMGREP_API_KEY} \\
                             --rm \\
-                            -v "${PWD}:/src" \\
+                            -v "${WORKSPACE}:/src" \\
+                            --workdir /src \\  # Ensure we're in the repo root
                             semgrep/semgrep \\
                             semgrep ci
                     """
