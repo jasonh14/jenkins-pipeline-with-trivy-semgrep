@@ -5,7 +5,6 @@ pipeline {
         // Define environment variables for reuse
         DOCKER_IMAGE_NAME = "docker-reactjs"
         CONTAINER_NAME = "react-container"
-        TRIVY_VERSION = "latest" // Specify the Trivy version to use
     }
 
     stages {
